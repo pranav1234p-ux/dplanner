@@ -18,6 +18,9 @@ It installs Node.js if needed, installs dependencies, and opens the app at
 you to paste your database connection string (Supabase). Keep the black window open while
 using the app; close it to stop.
 
+> Prefer a faster app? Double-click **`START-APP-PRODUCTION.bat`** instead — it makes an
+> optimized production build (adds ~1 minute the first time) and runs that.
+
 ## Quick start (manual / any OS)
 
 ```bash
