@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # secrets / local data (contain plaintext passwords or seeded DB data)
 /credentials-store.json

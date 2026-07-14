@@ -8,17 +8,26 @@ map planner, role-based access control, and full audit logging.
 
 ---
 
-## Quick start
+## Run on Windows (easiest — just double-click)
+
+1. Download the project (green **Code → Download ZIP** on GitHub, then unzip — or `git clone`).
+2. Double-click **`START-APP.bat`**.
+
+It installs Node.js if needed, installs dependencies, and opens the app at
+**http://localhost:3000**. On first run it creates a `.env` from `.env.example` and asks
+you to paste your database connection string (Supabase). Keep the black window open while
+using the app; close it to stop.
+
+## Quick start (manual / any OS)
 
 ```bash
 npm install
-npm run db:migrate      # create the SQLite DB + tables (first run)
-npm run db:seed         # load demo admin, users, drones, missions
+cp .env.example .env    # then fill in DATABASE_URL + JWT_SECRET
 npm run dev             # http://localhost:3000
 ```
 
-> Node.js 18+ required. The database is **SQLite** for zero-setup local dev — see
-> [Switching to PostgreSQL](#switching-to-postgresql) to match the production spec.
+> Node.js 18+ required. This build uses **PostgreSQL (Supabase)** — put your connection
+> string in `.env` (see `.env.example`).
 
 ### Demo credentials
 
