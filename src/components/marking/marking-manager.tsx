@@ -140,7 +140,7 @@ export function MarkingManager({
     push({ kind: "success", title: "Marking deleted" });
   }
 
-  const canDelete = (m: Marking & { createdById?: string }) =>
+  const canDelete = (m: OwnedMarking) =>
     isAdmin || (canManage && m.createdById === currentUserId);
 
   return (

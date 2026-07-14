@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input, Field } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toast";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
   const { push } = useToast();
@@ -91,5 +91,14 @@ export default function LoginPage() {
         </Link>
       </p>
     </motion.div>
+  );
+}
+
+// useSearchParams() must be inside a Suspense boundary for the static build.
+export default function LoginPage() {
+  return (
+    <React.Suspense fallback={null}>
+      <LoginForm />
+    </React.Suspense>
   );
 }
