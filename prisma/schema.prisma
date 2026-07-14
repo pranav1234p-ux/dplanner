@@ -1,0 +1,161 @@
+// Drone Command Center — Prisma schema
+// Backed by PostgreSQL (Supabase). Enums are modeled as strings; the app constrains
+// values via TypeScript unions in src/lib/constants.ts.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(cuid())
+  username       String   @unique
+  password       String
+  role           String   @default("VIEWER") // ADMIN | OPERATOR | VIEWER
+  approvalStatus String   @default("PENDING") // PENDING | APPROVED | REJECTED
+  fullName       String
+  armyNumber     String?
+  rank           String?
+  unit           String?
+  email          String   @unique
+  createdAt      DateTime @default(now())
+
+  missionsCreated   Mission[]      @relation("MissionCreatedBy")
+  missionsApproved  Mission[]      @relation("MissionApprovedBy")
+  dronesCreated     Drone[]        @relation("DroneCreatedBy")
+  mapMarkings       MapMarking[]
+  notifications     Notification[]
+  auditLogs         AuditLog[]
+  messagesSent      Message[]      @relation("MessageSender")
+  messagesReceived  Message[]      @relation("MessageRecipient")
+}
+
+model Drone {
+  id          String   @id @default(cuid())
+  droneId     String   @unique // e.g. DRN-001
+  name        String
+  type        String
+  frequency   String
+  unit        String
+  latitude    Float
+  longitude   Float
+  status      String   @default("STANDBY") // ACTIVE | STANDBY | MAINTENANCE
+  createdById String?
+  createdAt   DateTime @default(now())
+
+  createdBy User?     @relation("DroneCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  missions  Mission[]
+}
+
+model Mission {
+  id             String    @id @default(cuid())
+  missionName    String
+  missionCode    String    @unique // human-facing Mission ID, e.g. MSN-2026-001
+  description    String?
+  unit           String?
+  droneId        String
+  missionStatus  String    @default("PLANNED") // PLANNED | ACTIVE | COMPLETED | EXPIRED | CANCELLED
+  approvalStatus String    @default("PENDING") // PENDING | APPROVED | REJECTED
+  adcNumber      String?
+  notes          String?
+  startTime      DateTime?
+  endTime        DateTime?
+  createdById    String
+  approvedById   String?
+  approvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  drone      Drone       @relation(fields: [droneId], references: [id])
+  createdBy  User        @relation("MissionCreatedBy", fields: [createdById], references: [id])
+  approvedBy User?       @relation("MissionApprovedBy", fields: [approvedById], references: [id])
+  waypoints  Waypoint[]
+  mapObjects MapObject[]
+}
+
+model Waypoint {
+  id        String @id @default(cuid())
+  missionId String
+  sequence  Int
+  latitude  Float
+  longitude Float
+  altitude  Float  @default(100)
+  speed     Float  @default(10)
+  hoverTime Float  @default(0)
+
+  mission Mission @relation(fields: [missionId], references: [id], onDelete: Cascade)
+}
+
+model MapObject {
+  id          String  @id @default(cuid())
+  missionId   String
+  objectType  String // polygon | circle | line | rectangle
+  name        String
+  color       String  @default("#4ade80")
+  notes       String?
+  coordinates String // JSON-encoded coordinate array
+
+  mission Mission @relation(fields: [missionId], references: [id], onDelete: Cascade)
+}
+
+// Standalone map markings (not tied to a mission): drawn by admins/operators as
+// no-fly zones, restricted zones, or custom-named lines/polygons/shapes.
+model MapMarking {
+  id          String   @id @default(cuid())
+  name        String
+  shapeType   String // line | circle | rectangle | polygon
+  category    String   @default("CUSTOM") // NO_FLY | RESTRICTED | CUSTOM
+  color       String   @default("#4ade80")
+  coordinates String // JSON-encoded coordinate array (see map-config Shape format)
+  notes       String?
+  createdById String
+  createdAt   DateTime @default(now())
+
+  createdBy User @relation(fields: [createdById], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String? // specific recipient (direct notification)
+  audience  String   @default("ADMIN,OPERATOR,VIEWER") // comma-separated roles that may see this
+  title     String
+  message   String
+  type      String   @default("INFO")
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Free-text direct messages between users; recipientId null = admin broadcast to all.
+model Message {
+  id             String    @id @default(cuid())
+  senderId       String
+  senderName     String
+  recipientId    String? // null = broadcast (admin only)
+  body           String
+  attachments    String    @default("[]") // JSON array of { name, type, size, dataUrl }
+  classification String    @default("UNCLASSIFIED") // UNCLASSIFIED | RESTRICTED | CONFIDENTIAL | SECRET | TOP_SECRET
+  read           Boolean   @default(false)
+  editedAt       DateTime? // set when the sender edits (allowed within 1 hour)
+  deletedFor     String    @default("") // comma-separated user ids who deleted it for themselves
+  createdAt      DateTime  @default(now())
+
+  sender    User  @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient User? @relation("MessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  detail    String
+  userId    String?
+  actorName String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}

@@ -1,0 +1,116 @@
+# Drone Command Center
+
+A secure, military-style **drone mission planning & command-and-control** web application.
+Dark tactical UI (navy / black / gray with military-green accents), an interactive offline-capable
+map planner, role-based access control, and full audit logging.
+
+![stack](https://img.shields.io/badge/Next.js-16-black) ![stack](https://img.shields.io/badge/React-19-blue) ![stack](https://img.shields.io/badge/Prisma-6-green) ![stack](https://img.shields.io/badge/Tailwind-4-teal)
+
+---
+
+## Quick start
+
+```bash
+npm install
+npm run db:migrate      # create the SQLite DB + tables (first run)
+npm run db:seed         # load demo admin, users, drones, missions
+npm run dev             # http://localhost:3000
+```
+
+> Node.js 18+ required. The database is **SQLite** for zero-setup local dev — see
+> [Switching to PostgreSQL](#switching-to-postgresql) to match the production spec.
+
+### Demo credentials
+
+| Role | Username | Password | Notes |
+|------|----------|----------|-------|
+| Administrator | `admin` | `Admin@123` | Full control |
+| Operator | `operator1` | `Operator@123` | Approved, can plan missions |
+| Viewer | `viewer1` | `Viewer@123` | Read-only |
+
+A second operator (`operator2`) exists in **Pending Approval** state so you can try the
+admin approval workflow under **User Management**.
+
+---
+
+## Roles & permissions (RBAC)
+
+Enforced server-side in every API route (`src/lib/rbac.ts`), not just hidden in the UI.
+
+| Capability | Admin | Operator | Viewer |
+|---|:--:|:--:|:--:|
+| View dashboard / missions / maps / drones | ✅ | ✅ | ✅ |
+| Add drone · change drone status | ✅ | ✅ | — |
+| Edit / delete drone | ✅ | — | — |
+| Create / save missions, edit own (pre-approval) | ✅ | ✅ | — |
+| Approve missions · generate ADC · change status | ✅ | — | — |
+| Create / edit / delete No-Fly Zones | ✅ | — | — |
+| Approve operator accounts · manage users | ✅ | — | — |
+
+---
+
+## Features
+
+- **Auth** — self-hosted JWT (`jose`) in httpOnly cookies, `bcryptjs` password hashing,
+  Edge middleware route protection, operator self-registration → admin approval.
+- **Dashboard** — drone / mission / user summary cards, pie + bar charts (Recharts),
+  live audit-log activity timeline.
+- **Drone Directory** — searchable/filterable table, add/edit/status/delete with RBAC.
+- **Mission Planner** — full-screen Leaflet map; click or type to drop waypoints
+  (lat/lng/altitude/speed/hover); auto-joined flight path with live distance; switchable
+  layers (Tactical / Street / Satellite / Terrain); no-fly zones drawn in red.
+- **Missions** — list, detail with map preview + waypoints table + approval history,
+  admin approve/reject → **sequential ADC number** generation, status transitions.
+- **No-Fly Zones** — admins draw polygons on the map; everyone else views them.
+- **Exports** — GeoJSON, CSV, and printable (PDF via print) flight plans.
+- **Notifications** & **Audit Log** — every significant action recorded.
+
+---
+
+## Project structure
+
+```
+src/
+  app/
+    (auth)/           login + register (public)
+    (app)/            authenticated shell: dashboard, planner, missions,
+                      drones, no-fly-zones, users, notifications, profile, about
+    api/              auth, drones, missions, users, nfz, notifications
+  components/
+    ui/               shadcn-style primitives (button, card, badge, modal, toast…)
+    layout/           app shell (sidebar + topbar), page header
+    dashboard/ drones/ missions/ planner/ nfz/ users/ notifications/
+  lib/                prisma, auth, rbac, api helpers, constants, utils
+  middleware.ts       JWT route protection
+prisma/
+  schema.prisma       Users, Drones, Missions, Waypoints, MapObjects,
+                      NoFlyZones, Notifications, AuditLog
+  seed.ts             demo data
+```
+
+---
+
+## Switching to PostgreSQL
+
+The schema is Postgres-compatible. To switch:
+
+1. In `prisma/schema.prisma`, set `datasource db { provider = "postgresql" }`.
+2. Point `DATABASE_URL` in `.env` at your Postgres instance.
+3. `npm run db:migrate && npm run db:seed`.
+
+Enums are modeled as strings for SQLite portability and constrained via TypeScript unions
+in `src/lib/constants.ts`; they work unchanged on Postgres.
+
+---
+
+## Notes & known limitations
+
+- **Offline maps** use online tile providers by default. True offline operation needs a
+  local tile pack (e.g. `.pmtiles` / `.mbtiles`) served locally; the layer config in
+  `src/components/planner/map-config.ts` is the single place to point at local tiles.
+- Map drawing currently supports **waypoints** (the mission path) and **no-fly-zone
+  polygons**. Freehand polygon/circle/rectangle/line mission overlays are scaffolded in the
+  schema (`MapObject`) and render on the map, but interactive drawing of those shapes is a
+  planned addition.
+- Next.js 16 prints a `middleware` → `proxy` deprecation notice; the middleware works as-is.
+- Secrets in `.env` are development defaults — replace `JWT_SECRET` before any real deployment.
