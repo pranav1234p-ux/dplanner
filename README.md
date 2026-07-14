@@ -102,16 +102,23 @@ prisma/
 
 ---
 
-## Switching to PostgreSQL
+## Database (PostgreSQL / Supabase)
 
-The schema is Postgres-compatible. To switch:
+The app runs on **PostgreSQL** (hosted on Supabase). Set your connection strings in `.env`
+(copy from `.env.example`):
 
-1. In `prisma/schema.prisma`, set `datasource db { provider = "postgresql" }`.
-2. Point `DATABASE_URL` in `.env` at your Postgres instance.
-3. `npm run db:migrate && npm run db:seed`.
+- `DATABASE_URL` → Supabase **transaction pooler** (port `6543`, `?pgbouncer=true`) for app runtime.
+- `DIRECT_URL` → Supabase **session pooler** (port `5432`) for schema changes.
 
-Enums are modeled as strings for SQLite portability and constrained via TypeScript unions
-in `src/lib/constants.ts`; they work unchanged on Postgres.
+Then create the tables and load demo data:
+
+```bash
+npm run db:push    # create/sync all tables in your database
+npm run db:seed    # load demo admin, users, drones, missions, markings
+```
+
+Enums are modeled as strings (constrained via TypeScript unions in `src/lib/constants.ts`).
+The schema uses `db push` rather than migration files, so there is no `prisma/migrations` folder.
 
 ---
 
