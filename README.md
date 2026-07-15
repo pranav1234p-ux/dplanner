@@ -34,11 +34,8 @@ npm run dev             # http://localhost:3000
 
 ### Demo credentials
 
-| Role | Username | Password | Notes |
-|------|----------|----------|-------|
-| Administrator | `admin` | `Admin@123` | Full control |
-| Operator | `operator1` | `Operator@123` | Approved, can plan missions |
-| Viewer | `viewer1` | `Viewer@123` | Read-only |
+
+ ASK FROM ME FOR DEMO USE
 
 A second operator (`operator2`) exists in **Pending Approval** state so you can try the
 admin approval workflow under **User Management**.
