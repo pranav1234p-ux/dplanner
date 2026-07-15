@@ -4,8 +4,16 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
+  // Login credentials come from environment variables (set them in .env, which is
+  // git-ignored). Fallbacks are harmless placeholders — no real password lives in
+  // this file, so nothing usable is exposed if the repo is public.
+  const SEED_PW = process.env.SEED_PASSWORD || "changeme";
   const adminUser = process.env.SEED_ADMIN_USERNAME || "admin";
-  const adminPass = process.env.SEED_ADMIN_PASSWORD || "Admin@123";
+  const adminPass = process.env.SEED_ADMIN_PASSWORD || SEED_PW;
+  const operatorUser = process.env.SEED_OPERATOR_USERNAME || "operator1";
+  const operatorPass = process.env.SEED_OPERATOR_PASSWORD || SEED_PW;
+  const viewerUser = process.env.SEED_VIEWER_USERNAME || "viewer1";
+  const viewerPass = process.env.SEED_VIEWER_PASSWORD || SEED_PW;
 
   // Wipe in dependency order for repeatable seeding.
   await prisma.message.deleteMany();
@@ -37,8 +45,8 @@ async function main() {
 
   const operator1 = await prisma.user.create({
     data: {
-      username: "operator1",
-      password: hash("Operator@123"),
+      username: operatorUser,
+      password: hash(operatorPass),
       role: "OPERATOR",
       approvalStatus: "APPROVED",
       fullName: "Maj. R. Verma",
@@ -51,8 +59,8 @@ async function main() {
 
   await prisma.user.create({
     data: {
-      username: "operator2",
-      password: hash("Operator@123"),
+      username: `${operatorUser}-pending`,
+      password: hash(operatorPass),
       role: "OPERATOR",
       approvalStatus: "PENDING",
       fullName: "Capt. S. Nair",
@@ -65,8 +73,8 @@ async function main() {
 
   await prisma.user.create({
     data: {
-      username: "viewer1",
-      password: hash("Viewer@123"),
+      username: viewerUser,
+      password: hash(viewerPass),
       role: "VIEWER",
       approvalStatus: "APPROVED",
       fullName: "Lt. P. Kaur",
@@ -239,9 +247,8 @@ async function main() {
   });
 
   console.log("Seed complete.");
-  console.log(`  Admin login:    ${adminUser} / ${adminPass}`);
-  console.log("  Operator login: operator1 / Operator@123");
-  console.log("  Viewer login:   viewer1 / Viewer@123");
+  console.log(`  Users created: ${adminUser} (admin), ${operatorUser} (operator), ${viewerUser} (viewer)`);
+  console.log("  Passwords are taken from your SEED_* env vars (see .env / .env.example).");
   console.log(`  Missions: ${mission1.missionCode} + 2 more | Drones: ${drones.length}`);
 }
 

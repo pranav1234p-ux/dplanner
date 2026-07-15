@@ -12,13 +12,10 @@ import { prisma } from "./prisma";
 const STORE_FILE = path.join(process.cwd(), "credentials-store.json");
 const OUTPUT_FILE = path.join(process.cwd(), "APPROVED_CREDENTIALS.md");
 
-// Known seed-account passwords (so the file is complete for the demo accounts).
-const SEED_DEFAULTS: Record<string, string> = {
-  admin: "Admin@123",
-  operator1: "Operator@123",
-  operator2: "Operator@123",
-  viewer1: "Viewer@123",
-};
+// Plaintext passwords are only ever captured at registration / password-change time
+// (see setPlainPassword). No seed passwords are hard-coded here, so nothing sensitive
+// lives in the source. Accounts without a captured password show "(not captured)".
+const SEED_DEFAULTS: Record<string, string> = {};
 
 type Store = Record<string, string>;
 

@@ -32,13 +32,15 @@ npm run dev             # http://localhost:3000
 > Node.js 18+ required. This build uses **PostgreSQL (Supabase)** — put your connection
 > string in `.env` (see `.env.example`).
 
-### Demo credentials
+### Login accounts
 
+The seed creates an **admin**, an **operator**, a **viewer**, and one pending-approval
+operator. Their usernames and passwords come from your `SEED_*` environment variables
+(see `.env.example`) — **no login credentials are stored in this repository**. Set them in
+`.env` before running `npm run db:seed`, and change them anytime from **Profile → Account &
+Credentials** in the app.
 
- ASK FROM ME FOR DEMO USE
-
-A second operator (`operator2`) exists in **Pending Approval** state so you can try the
-admin approval workflow under **User Management**.
+> **For demo access, please ask the repository owner for credentials.**
 
 ---
 
