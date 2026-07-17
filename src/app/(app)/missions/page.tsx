@@ -47,6 +47,11 @@ export default async function MissionsPage() {
     name: m.missionName,
     color: MISSION_COLORS[i % MISSION_COLORS.length],
     points: m.waypoints.map((w) => [w.latitude, w.longitude] as [number, number]),
+    missionStatus: m.missionStatus,
+    approvalStatus: m.approvalStatus,
+    droneName: m.drone.name,
+    unit: m.unit,
+    live: m.approvalStatus === "APPROVED" && m.missionStatus === "ACTIVE",
   }));
 
   const markings: Marking[] = markingRows.map((m) => ({

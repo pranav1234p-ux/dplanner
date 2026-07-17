@@ -5,9 +5,12 @@ import L from "leaflet";
 import { MapContainer, Marker, Polyline, Polygon, Circle, Rectangle, CircleMarker, Tooltip, useMap } from "react-leaflet";
 import { IndiaBoundary } from "@/components/planner/india-boundary";
 import { MapTiles } from "@/components/planner/map-tiles";
+import { MapViewMemory } from "@/components/planner/map-view-memory";
+import { CursorCoords } from "@/components/planner/cursor-coords";
 import { MarkingLabels } from "@/components/marking/marking-labels";
 import { markerPinIcon } from "@/components/marking/marker-icon";
 import { markingColor, type Marking } from "@/components/planner/map-config";
+import { MissionLiveLabel } from "./mission-live-label";
 import type { OverviewMission } from "./missions-overview-map";
 
 /** Centres the map on the selected mission showing a ~150×150 km area. The map
@@ -45,6 +48,8 @@ export default function MissionsOverviewMapInner({
     >
       <MapTiles layer={layer} />
       <IndiaBoundary />
+      <MapViewMemory id="missions" />
+      <CursorCoords />
       <FocusController mission={focused} />
 
       {/* Map markings with labels */}
@@ -86,7 +91,21 @@ export default function MissionsOverviewMapInner({
             {m.points.length > 1 && (
               <Polyline
                 positions={m.points}
-                pathOptions={{ color: m.color, weight: focused?.id === m.id ? 4 : 2.5, opacity: 0.9 }}
+                // The blink glow is drawn in the mission's own colour, which only
+                // CSS can reach — hand it down as a custom property. Leaflet only
+                // builds the <path> once the layer is added, so wait for `add`.
+                eventHandlers={{
+                  add: (e) => {
+                    const path = (e.target as L.Path).getElement() as SVGPathElement | null;
+                    path?.style.setProperty("--mission-color", m.color);
+                  },
+                }}
+                pathOptions={{
+                  color: m.color,
+                  weight: focused?.id === m.id ? 4 : 2.5,
+                  opacity: m.live ? 1 : 0.9,
+                  className: m.live ? "mission-path-blink" : undefined,
+                }}
               />
             )}
             {m.points.map((p, i) => (
@@ -99,6 +118,17 @@ export default function MissionsOverviewMapInner({
                 <Tooltip>{`${m.code} · WP ${i + 1}`}</Tooltip>
               </CircleMarker>
             ))}
+            {m.live && (
+              <MissionLiveLabel
+                // Above the northernmost waypoint, so the label sits clear of the
+                // path instead of overlapping it.
+                position={m.points.reduce((best, p) => (p[0] > best[0] ? p : best), m.points[0])}
+                color={m.color}
+                code={m.code}
+                droneName={m.droneName}
+                unit={m.unit}
+              />
+            )}
           </Fragment>
         ),
       )}

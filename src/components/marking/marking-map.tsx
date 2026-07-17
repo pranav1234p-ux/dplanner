@@ -14,6 +14,8 @@ import {
 } from "react-leaflet";
 import { IndiaBoundary, INDIA_BOUNDS } from "@/components/planner/india-boundary";
 import { MapTiles } from "@/components/planner/map-tiles";
+import { MapViewMemory } from "@/components/planner/map-view-memory";
+import { CursorCoords } from "@/components/planner/cursor-coords";
 import { markingColor, type Marking } from "@/components/planner/map-config";
 import { MarkingLabels, haversineKm } from "./marking-labels";
 import { markerPinIcon } from "./marker-icon";
@@ -101,6 +103,8 @@ export default function MarkingMap({
     >
       <MapTiles layer={layer} />
       <IndiaBoundary />
+      <MapViewMemory id="marking" />
+      <CursorCoords />
       <FocusController marking={focused} />
       {interactive && onAddPoint && <ClickHandler onAdd={onAddPoint} />}
 

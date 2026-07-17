@@ -10,7 +10,7 @@ type Note = { id: string; title: string; message: string; type: string; read: bo
 type Pending = { id: string; missionCode: string; missionName: string; createdBy: { fullName: string } };
 
 const ICON: Record<string, { icon: React.ElementType; tone: string }> = {
-  SUCCESS: { icon: CheckCircle2, tone: "text-emerald-400" },
+  SUCCESS: { icon: CheckCircle2, tone: "text-sky-400" },
   WARNING: { icon: AlertTriangle, tone: "text-amber-400" },
   INFO: { icon: Info, tone: "text-sky-400" },
 };
@@ -50,11 +50,11 @@ export function NotificationPopup({ onClose }: { onClose: () => void }) {
     >
       <div className="flex items-center justify-between border-b border-white/8 px-4 py-3">
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-200">
-          Notifications {unread > 0 && <span className="text-emerald-400">({unread})</span>}
+          Notifications {unread > 0 && <span className="text-sky-400">({unread})</span>}
         </p>
         <div className="flex items-center gap-1">
           {unread > 0 && (
-            <button onClick={markAll} title="Mark all read" className="rounded p-1 text-slate-400 hover:text-emerald-300">
+            <button onClick={markAll} title="Mark all read" className="rounded p-1 text-slate-400 hover:text-sky-300">
               <CheckCheck className="h-4 w-4" />
             </button>
           )}
@@ -81,7 +81,7 @@ export function NotificationPopup({ onClose }: { onClose: () => void }) {
                 <ClipboardCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium text-slate-100">
-                    <span className="font-mono text-emerald-300">{m.missionCode}</span> · {m.missionName}
+                    <span className="font-mono text-sky-300">{m.missionCode}</span> · {m.missionName}
                   </p>
                   <p className="text-[0.7rem] text-slate-500">
                     by {m.createdBy.fullName} · {canApprove ? "tap to approve & assign ADC" : "awaiting approval"}
@@ -104,7 +104,7 @@ export function NotificationPopup({ onClose }: { onClose: () => void }) {
             return (
               <div
                 key={n.id}
-                className={`flex items-start gap-2.5 rounded-lg px-2 py-2 ${!n.read ? "bg-emerald-500/[0.04]" : ""}`}
+                className={`flex items-start gap-2.5 rounded-lg px-2 py-2 ${!n.read ? "bg-sky-500/[0.04]" : ""}`}
               >
                 <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${meta.tone}`} />
                 <div className="min-w-0 flex-1">
@@ -116,7 +116,7 @@ export function NotificationPopup({ onClose }: { onClose: () => void }) {
                   </div>
                   <p className="text-xs text-slate-400">{n.message}</p>
                 </div>
-                {!n.read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-emerald-400" />}
+                {!n.read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-sky-400" />}
               </div>
             );
           })}

@@ -9,7 +9,7 @@ import type { Marking } from "@/components/planner/map-config";
 const NAME_SPAN_KM = 400;
 const DISTANCE_SPAN_KM = 100;
 
-function useVisibleWidthKm(): number {
+export function useVisibleWidthKm(): number {
   const map = useMap();
   const [widthKm, setWidthKm] = useState(Infinity);
   useEffect(() => {

@@ -22,6 +22,7 @@ import { Input, Select, Field, Textarea } from "@/components/ui/input";
 import { DroneStatusBadge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/toast";
 import { pathLength, formatDateTime, formatDuration } from "@/lib/utils";
+import { useStickyMapLayer } from "@/lib/map-view";
 import { MAP_LAYERS, type Waypoint, type Marking, type LatLng } from "./map-config";
 
 const PlannerMap = dynamic(() => import("./planner-map"), {
@@ -47,7 +48,7 @@ export function Planner({
   const router = useRouter();
   const { push } = useToast();
 
-  const [layer, setLayer] = React.useState<keyof typeof MAP_LAYERS>("tactical");
+  const [layer, setLayer] = useStickyMapLayer("planner");
   const [droneId, setDroneId] = React.useState("");
   const [waypoints, setWaypoints] = React.useState<Waypoint[]>([]);
   const [saving, setSaving] = React.useState(false);
@@ -144,7 +145,7 @@ export function Planner({
     <div className="flex h-full flex-col">
       {/* Tab title — visible when the planner opens (sidebar is icon-only) */}
       <div className="flex h-11 shrink-0 items-center gap-2 border-b border-white/8 bg-navy-900/60 px-4">
-        <MapIcon className="h-4 w-4 text-emerald-400" />
+        <MapIcon className="h-4 w-4 text-sky-400" />
         <h1 className="text-sm font-bold tracking-tight text-slate-100">Mission Planner</h1>
         <span className="hidden text-xs text-slate-500 sm:inline">— plan waypoints, schedule &amp; save a mission</span>
       </div>
@@ -153,7 +154,7 @@ export function Planner({
         {/* Map */}
         <div className="relative h-[45vh] flex-1 lg:h-auto">
         <PlannerMap
-          layer={layer}
+          layer={layer as keyof typeof MAP_LAYERS}
           waypoints={waypoints}
           shapes={[]}
           markings={markings}
@@ -161,6 +162,7 @@ export function Planner({
           center={mapCenter}
           zoom={selectedDrone ? 11 : 5}
           interactive
+          viewMemoryId="planner"
         />
 
         {/* Layer switcher */}
@@ -171,7 +173,7 @@ export function Planner({
               key={key}
               onClick={() => setLayer(key as keyof typeof MAP_LAYERS)}
               className={`rounded px-2 py-1 text-[0.68rem] font-semibold uppercase tracking-wider transition-colors ${
-                layer === key ? "bg-emerald-500/20 text-emerald-300" : "text-slate-400 hover:text-slate-200"
+                layer === key ? "bg-sky-500/20 text-sky-300" : "text-slate-400 hover:text-slate-200"
               }`}
             >
               {l.name}
@@ -181,7 +183,7 @@ export function Planner({
 
         {/* Readout */}
         <div className="absolute bottom-6 left-3 z-[500] panel flex items-center gap-4 px-3 py-2 text-xs">
-          <span className="flex items-center gap-1.5 text-emerald-300">
+          <span className="flex items-center gap-1.5 text-sky-300">
             <MapPin className="h-3.5 w-3.5" /> {waypoints.length} WP
           </span>
           <span className="flex items-center gap-1.5 text-slate-300">
@@ -273,7 +275,7 @@ export function Planner({
                 </div>
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border border-white/8 bg-navy-950/40 px-3 py-2 text-xs">
-                <Clock className="h-3.5 w-3.5 text-emerald-400" />
+                <Clock className="h-3.5 w-3.5 text-sky-400" />
                 <span className="text-slate-500">Flight window:</span>
                 <span className="font-medium text-slate-200">{scheduleSummary}</span>
               </div>
@@ -305,7 +307,7 @@ export function Planner({
                 {waypoints.map((w, i) => (
                   <div key={i} className="rounded-lg border border-white/8 bg-navy-950/40 p-3">
                     <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-2 text-xs font-semibold text-emerald-300">
+                      <span className="flex items-center gap-2 text-xs font-semibold text-sky-300">
                         <Crosshair className="h-3.5 w-3.5" /> WP {i + 1}
                         <span className="font-mono text-[0.68rem] text-slate-500">
                           {w.lat.toFixed(4)}, {w.lng.toFixed(4)}
@@ -348,7 +350,7 @@ export function Planner({
 function StepHeader({ n, icon: Icon, title }: { n: number; icon: React.ElementType; title: string }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="grid h-6 w-6 place-items-center rounded-full bg-emerald-500/15 text-[0.7rem] font-bold text-emerald-300">
+      <span className="grid h-6 w-6 place-items-center rounded-full bg-sky-500/15 text-[0.7rem] font-bold text-sky-300">
         {n}
       </span>
       <h3 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-300">
@@ -366,7 +368,7 @@ function MiniField({ label, value, onChange }: { label: string; value: number; o
         type="number"
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
-        className="h-8 w-full rounded-md border border-white/10 bg-navy-950/60 px-2 text-xs text-slate-100 focus:border-emerald-500/40 focus:outline-none"
+        className="h-8 w-full rounded-md border border-white/10 bg-navy-950/60 px-2 text-xs text-slate-100 focus:border-sky-500/40 focus:outline-none"
       />
     </label>
   );

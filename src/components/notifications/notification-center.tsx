@@ -10,7 +10,7 @@ import { timeAgo } from "@/lib/utils";
 export type Note = { id: string; title: string; message: string; type: string; read: boolean; createdAt: string };
 
 const ICON: Record<string, { icon: React.ElementType; tone: string }> = {
-  SUCCESS: { icon: CheckCircle2, tone: "text-emerald-400" },
+  SUCCESS: { icon: CheckCircle2, tone: "text-sky-400" },
   WARNING: { icon: AlertTriangle, tone: "text-amber-400" },
   INFO: { icon: Info, tone: "text-sky-400" },
 };
@@ -52,7 +52,7 @@ export function NotificationCenter({ initial }: { initial: Note[] }) {
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: Math.min(i * 0.03, 0.3) }}
-              className={`panel flex items-start gap-3 p-4 ${!n.read ? "border-l-2 border-l-emerald-500/60" : "opacity-70"}`}
+              className={`panel flex items-start gap-3 p-4 ${!n.read ? "border-l-2 border-l-sky-500/60" : "opacity-70"}`}
             >
               <Icon className={`mt-0.5 h-4.5 w-4.5 shrink-0 ${meta.tone}`} />
               <div className="min-w-0 flex-1">
@@ -62,7 +62,7 @@ export function NotificationCenter({ initial }: { initial: Note[] }) {
                 </div>
                 <p className="mt-0.5 text-sm text-slate-400">{n.message}</p>
               </div>
-              {!n.read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-emerald-400" />}
+              {!n.read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-sky-400" />}
             </motion.div>
           );
         })}

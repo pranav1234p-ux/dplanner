@@ -43,6 +43,7 @@ const NAV: NavItem[] = [
   { href: "/planner", label: "Mission Planner", icon: MapIcon },
   { href: "/missions", label: "Missions", icon: ListChecks },
   { href: "/map-marking", label: "Map Marking", icon: PencilRuler },
+  { href: "/drone-detection", label: "Drone Detection", icon: Radar },
   { href: "/messages", label: "Free Text Message", icon: MessageSquare },
   { href: "/users", label: "User Management", icon: Users, adminOnly: true },
   { href: "/profile", label: "Profile", icon: UserCircle },
@@ -95,12 +96,12 @@ export function AppShell({
   const FullSidebar = (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-3 border-b border-white/8 px-5 py-4">
-        <div className="grid h-9 w-9 place-items-center rounded-lg bg-emerald-500/10 text-emerald-400 glow-green">
+        <div className="grid h-9 w-9 place-items-center rounded-lg bg-sky-500/10 text-sky-400 glow-accent">
           <Radar className="h-5 w-5" />
         </div>
         <div className="leading-tight">
           <p className="text-[0.8rem] font-bold uppercase tracking-[0.15em] text-slate-100">Command</p>
-          <p className="text-[0.62rem] uppercase tracking-[0.25em] text-emerald-400/80">Center</p>
+          <p className="text-[0.62rem] uppercase tracking-[0.25em] text-sky-400/80">Center</p>
         </div>
       </div>
       <nav className="flex-1 space-y-1 overflow-y-auto p-3">
@@ -112,7 +113,7 @@ export function AppShell({
               href={item.href}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-                active ? "bg-emerald-500/10 text-emerald-300" : "text-slate-400 hover:bg-white/5 hover:text-slate-100",
+                active ? "bg-sky-500/10 text-sky-300" : "text-slate-400 hover:bg-white/5 hover:text-slate-100",
               )}
             >
               <item.icon className="h-4 w-4 shrink-0" />
@@ -144,7 +145,7 @@ export function AppShell({
       {/* Desktop icon rail — compact so the content/maps get more room */}
       <aside className="hidden w-16 shrink-0 flex-col border-r border-white/8 bg-navy-900/60 lg:flex">
         <Link href="/dashboard" className="grid h-14 place-items-center border-b border-white/8" title="Command Center">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-emerald-500/10 text-emerald-400 glow-green">
+          <span className="grid h-9 w-9 place-items-center rounded-lg bg-sky-500/10 text-sky-400 glow-accent">
             <Radar className="h-5 w-5" />
           </span>
         </Link>
@@ -158,13 +159,13 @@ export function AppShell({
                 title={item.label}
                 className={cn(
                   "group relative flex items-center justify-center rounded-lg py-2.5 transition-colors",
-                  active ? "bg-emerald-500/10 text-emerald-300" : "text-slate-400 hover:bg-white/5 hover:text-slate-100",
+                  active ? "bg-sky-500/10 text-sky-300" : "text-slate-400 hover:bg-white/5 hover:text-slate-100",
                 )}
               >
                 {active && (
                   <motion.span
                     layoutId="nav-active"
-                    className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-r bg-emerald-400"
+                    className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-r bg-sky-400"
                   />
                 )}
                 <item.icon className="h-5 w-5" />
@@ -180,7 +181,7 @@ export function AppShell({
           })}
         </nav>
         <div className="flex flex-col items-center gap-2 border-t border-white/8 p-2">
-          <div title={user.fullName} className="grid h-9 w-9 place-items-center rounded-full bg-navy-700 text-xs font-bold text-emerald-300">
+          <div title={user.fullName} className="grid h-9 w-9 place-items-center rounded-full bg-navy-700 text-xs font-bold text-sky-300">
             {initials}
           </div>
           <button
@@ -232,7 +233,7 @@ export function AppShell({
             <input
               id="global-search"
               placeholder="Search missions, drones, units…  ( / )"
-              className="h-9 w-full rounded-lg border border-white/10 bg-navy-950/60 pl-9 pr-3 text-sm text-slate-200 placeholder:text-slate-600 focus:border-emerald-500/40 focus:outline-none"
+              className="h-9 w-full rounded-lg border border-white/10 bg-navy-950/60 pl-9 pr-3 text-sm text-slate-200 placeholder:text-slate-600 focus:border-sky-500/40 focus:outline-none"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   const q = (e.target as HTMLInputElement).value.trim();
@@ -250,7 +251,7 @@ export function AppShell({
             >
               <Bell className="h-4.5 w-4.5" />
               {unreadCount > 0 && (
-                <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-emerald-400 ring-2 ring-navy-900" />
+                <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-sky-400 ring-2 ring-navy-900" />
               )}
             </button>
 
@@ -259,7 +260,7 @@ export function AppShell({
                 onClick={() => setMenuOpen((v) => !v)}
                 className="flex items-center gap-2 rounded-lg py-1 pl-1 pr-2 hover:bg-white/5"
               >
-                <div className="grid h-8 w-8 place-items-center rounded-full bg-navy-700 text-xs font-bold text-emerald-300">
+                <div className="grid h-8 w-8 place-items-center rounded-full bg-navy-700 text-xs font-bold text-sky-300">
                   {initials}
                 </div>
               </button>

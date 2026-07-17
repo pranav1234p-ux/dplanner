@@ -62,14 +62,14 @@ export const MISSION_COLORS = [
 
 // Tailwind-friendly color tokens for status badges.
 export const DRONE_STATUS_META: Record<DroneStatus, { label: string; tone: string; dot: string }> = {
-  ACTIVE: { label: "Active", tone: "text-emerald-300 bg-emerald-500/10 border-emerald-500/30", dot: "bg-emerald-400" },
+  ACTIVE: { label: "Active", tone: "text-sky-300 bg-sky-500/10 border-sky-500/30", dot: "bg-sky-400" },
   STANDBY: { label: "Standby", tone: "text-amber-300 bg-amber-500/10 border-amber-500/30", dot: "bg-amber-400" },
   MAINTENANCE: { label: "Maintenance", tone: "text-red-300 bg-red-500/10 border-red-500/30", dot: "bg-red-400" },
 };
 
 export const MISSION_STATUS_META: Record<MissionStatus, { label: string; tone: string }> = {
   PLANNED: { label: "Planned", tone: "text-sky-300 bg-sky-500/10 border-sky-500/30" },
-  ACTIVE: { label: "Active", tone: "text-emerald-300 bg-emerald-500/10 border-emerald-500/30" },
+  ACTIVE: { label: "Active", tone: "text-sky-300 bg-sky-500/10 border-sky-500/30" },
   COMPLETED: { label: "Completed", tone: "text-slate-300 bg-slate-500/10 border-slate-500/30" },
   EXPIRED: { label: "Expired", tone: "text-amber-300 bg-amber-500/10 border-amber-500/30" },
   CANCELLED: { label: "Cancelled", tone: "text-red-300 bg-red-500/10 border-red-500/30" },
@@ -77,12 +77,12 @@ export const MISSION_STATUS_META: Record<MissionStatus, { label: string; tone: s
 
 export const APPROVAL_STATUS_META: Record<ApprovalStatus, { label: string; tone: string }> = {
   PENDING: { label: "Pending", tone: "text-amber-300 bg-amber-500/10 border-amber-500/30" },
-  APPROVED: { label: "Approved", tone: "text-emerald-300 bg-emerald-500/10 border-emerald-500/30" },
+  APPROVED: { label: "Approved", tone: "text-sky-300 bg-sky-500/10 border-sky-500/30" },
   REJECTED: { label: "Rejected", tone: "text-red-300 bg-red-500/10 border-red-500/30" },
 };
 
 export const ROLE_META: Record<Role, { label: string; tone: string }> = {
-  ADMIN: { label: "Administrator", tone: "text-emerald-300 bg-emerald-500/10 border-emerald-500/30" },
+  ADMIN: { label: "Administrator", tone: "text-sky-300 bg-sky-500/10 border-sky-500/30" },
   OPERATOR: { label: "Operator", tone: "text-sky-300 bg-sky-500/10 border-sky-500/30" },
   VIEWER: { label: "Viewer", tone: "text-slate-300 bg-slate-500/10 border-slate-500/30" },
 };

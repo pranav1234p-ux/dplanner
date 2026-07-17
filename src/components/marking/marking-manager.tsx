@@ -11,6 +11,7 @@ import { haversine } from "@/lib/utils";
 import { MARKING_CATEGORIES, MARKING_CATEGORY_META, type MarkingCategory } from "@/lib/constants";
 import { markingColor, type Marking } from "@/components/planner/map-config";
 import { LayerSwitcher } from "@/components/planner/layer-switcher";
+import { useStickyMapLayer } from "@/lib/map-view";
 
 type OwnedMarking = Marking & { createdById?: string | null };
 
@@ -46,7 +47,7 @@ export function MarkingManager({
   const router = useRouter();
   const { push } = useToast();
   const [markings, setMarkings] = React.useState<OwnedMarking[]>(initial);
-  const [layer, setLayer] = React.useState("tactical");
+  const [layer, setLayer] = useStickyMapLayer("marking");
   const [focusId, setFocusId] = React.useState<string | null>(null);
   const focused = markings.find((m) => m.id === focusId) ?? null;
   const [shape, setShape] = React.useState<(typeof SHAPE_TOOLS)[number]["key"]>("polygon");
@@ -185,7 +186,7 @@ export function MarkingManager({
                   }}
                   className={`flex flex-col items-center gap-1 rounded-lg border py-2 text-[0.55rem] uppercase tracking-wide transition-colors ${
                     shape === t.key
-                      ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-300"
+                      ? "border-sky-500/50 bg-sky-500/10 text-sky-300"
                       : "border-white/10 text-slate-400 hover:bg-white/5"
                   }`}
                 >
@@ -247,12 +248,12 @@ export function MarkingManager({
                   <label className="flex-1">
                     <span className="mb-1 block text-[0.6rem] uppercase tracking-wider text-slate-500">Lat</span>
                     <input value={manualPt.lat} onChange={(e) => setManualPt((m) => ({ ...m, lat: e.target.value }))} placeholder="28.61"
-                      className="h-8 w-full rounded-md border border-white/10 bg-navy-950/60 px-2 text-xs text-slate-100 focus:border-emerald-500/40 focus:outline-none" />
+                      className="h-8 w-full rounded-md border border-white/10 bg-navy-950/60 px-2 text-xs text-slate-100 focus:border-sky-500/40 focus:outline-none" />
                   </label>
                   <label className="flex-1">
                     <span className="mb-1 block text-[0.6rem] uppercase tracking-wider text-slate-500">Lng</span>
                     <input value={manualPt.lng} onChange={(e) => setManualPt((m) => ({ ...m, lng: e.target.value }))} placeholder="77.20"
-                      className="h-8 w-full rounded-md border border-white/10 bg-navy-950/60 px-2 text-xs text-slate-100 focus:border-emerald-500/40 focus:outline-none" />
+                      className="h-8 w-full rounded-md border border-white/10 bg-navy-950/60 px-2 text-xs text-slate-100 focus:border-sky-500/40 focus:outline-none" />
                   </label>
                   <Button type="button" variant="secondary" size="sm" onClick={addManualPoint}>
                     <Plus className="h-3.5 w-3.5" />
@@ -262,7 +263,7 @@ export function MarkingManager({
                   <label className="mt-2 block">
                     <span className="mb-1 block text-[0.6rem] uppercase tracking-wider text-slate-500">Radius (km) — optional</span>
                     <input value={radiusKm} onChange={(e) => setRadiusKm(e.target.value)} placeholder="e.g. 20"
-                      className="h-8 w-full rounded-md border border-white/10 bg-navy-950/60 px-2 text-xs text-slate-100 focus:border-emerald-500/40 focus:outline-none" />
+                      className="h-8 w-full rounded-md border border-white/10 bg-navy-950/60 px-2 text-xs text-slate-100 focus:border-sky-500/40 focus:outline-none" />
                     <span className="mt-1 block text-[0.6rem] text-slate-500">Set center (click/enter) + radius, or click center then edge.</span>
                   </label>
                 )}
@@ -327,7 +328,7 @@ export function MarkingManager({
                 <div
                   key={m.id}
                   className={`flex items-center justify-between rounded-lg border px-3 py-2.5 transition-colors ${
-                    active ? "border-emerald-500/50 bg-emerald-500/10" : "border-white/8 bg-navy-950/40"
+                    active ? "border-sky-500/50 bg-sky-500/10" : "border-white/8 bg-navy-950/40"
                   }`}
                 >
                   <button

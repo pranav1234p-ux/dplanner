@@ -27,7 +27,7 @@ export default function AboutPage() {
       <div className="mx-auto max-w-3xl space-y-6 p-6">
         <Card>
           <CardContent className="flex items-center gap-4 py-6">
-            <div className="grid h-14 w-14 place-items-center rounded-xl bg-emerald-500/10 text-emerald-400 glow-green">
+            <div className="grid h-14 w-14 place-items-center rounded-xl bg-sky-500/10 text-sky-400 glow-accent">
               <Radar className="h-7 w-7" />
             </div>
             <div>
@@ -58,7 +58,7 @@ export default function AboutPage() {
             <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {FEATURES.map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-400" />
                   {f}
                 </li>
               ))}

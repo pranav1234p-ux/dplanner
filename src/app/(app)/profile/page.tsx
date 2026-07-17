@@ -42,7 +42,7 @@ export default async function ProfilePage() {
         {/* Identity card */}
         <Card className="lg:col-span-1">
           <CardContent className="flex flex-col items-center py-8 text-center">
-            <div className="grid h-20 w-20 place-items-center rounded-full bg-navy-700 text-2xl font-bold text-emerald-300 glow-green">
+            <div className="grid h-20 w-20 place-items-center rounded-full bg-navy-700 text-2xl font-bold text-sky-300 glow-accent">
               {user.fullName.split(" ").map((s) => s[0]).slice(0, 2).join("")}
             </div>
             <h2 className="mt-4 text-lg font-bold text-slate-50">{user.fullName}</h2>
@@ -98,13 +98,13 @@ export default async function ProfilePage() {
             <CardHeader><CardTitle><Settings className="h-3.5 w-3.5" /> System &amp; Users</CardTitle></CardHeader>
             <CardContent className="space-y-2">
               <Link href="/users" className="flex items-center gap-2 rounded-lg border border-white/8 px-3 py-2.5 text-sm text-slate-300 hover:bg-white/5">
-                <Users className="h-4 w-4 text-emerald-400" /> User Management
+                <Users className="h-4 w-4 text-sky-400" /> User Management
               </Link>
               <Link href="/map-marking" className="flex items-center gap-2 rounded-lg border border-white/8 px-3 py-2.5 text-sm text-slate-300 hover:bg-white/5">
-                <PencilRuler className="h-4 w-4 text-emerald-400" /> Map Marking
+                <PencilRuler className="h-4 w-4 text-sky-400" /> Map Marking
               </Link>
               <Link href="/about" className="flex items-center gap-2 rounded-lg border border-white/8 px-3 py-2.5 text-sm text-slate-300 hover:bg-white/5">
-                <Settings className="h-4 w-4 text-emerald-400" /> Application Info
+                <Settings className="h-4 w-4 text-sky-400" /> Application Info
               </Link>
             </CardContent>
           </Card>

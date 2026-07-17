@@ -30,6 +30,12 @@ type Perms = {
   canStatus: boolean;
 };
 
+// Drone airframe presets offered when adding/editing — "type" itself is a plain
+// string in the schema (no DB-level enum), so anything typed under "Custom"
+// still saves fine; this is just guidance for the common cases.
+const DRONE_TYPE_PRESETS = ["Quadcopter", "FPV", "Fixed Wing", "VTOL"] as const;
+const CUSTOM_TYPE = "__CUSTOM__";
+
 const EMPTY: Omit<Drone, "id"> = {
   droneId: "",
   name: "",
@@ -151,7 +157,7 @@ export function DroneDirectory({
                 transition={{ delay: Math.min(i * 0.02, 0.3) }}
                 className="border-b border-white/5 last:border-0 hover:bg-white/[0.02]"
               >
-                <td className="px-4 py-3 font-mono text-emerald-300">{d.droneId}</td>
+                <td className="px-4 py-3 font-mono text-sky-300">{d.droneId}</td>
                 <td className="px-4 py-3 font-medium text-slate-100">{d.name}</td>
                 <td className="px-4 py-3 text-slate-300">{d.type}</td>
                 <td className="px-4 py-3 font-mono text-xs text-slate-400">{d.frequency}</td>
@@ -170,7 +176,7 @@ export function DroneDirectory({
                         <button
                           title="Change status"
                           onClick={() => setStatusFor(d)}
-                          className="grid h-8 w-8 place-items-center rounded-md text-slate-400 hover:bg-white/5 hover:text-emerald-300"
+                          className="grid h-8 w-8 place-items-center rounded-md text-slate-400 hover:bg-white/5 hover:text-sky-300"
                         >
                           <RefreshCw className="h-3.5 w-3.5" />
                         </button>
@@ -259,6 +265,12 @@ function DroneFormModal({
   const [form, setForm] = React.useState(drone ?? { ...EMPTY });
   const [loading, setLoading] = React.useState(false);
   const isNew = !drone;
+  // A drone being edited may already have a type outside the preset list (the
+  // fleet has some free-typed values from before this dropdown existed) — in
+  // that case default the picker to Custom rather than silently discarding it.
+  const [typeChoice, setTypeChoice] = React.useState<string>(() =>
+    (DRONE_TYPE_PRESETS as readonly string[]).includes(form.type) ? form.type : form.type ? CUSTOM_TYPE : "",
+  );
 
   function set<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
     setForm((f) => ({ ...f, [k]: v }));
@@ -294,7 +306,36 @@ function DroneFormModal({
           <Input value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="Falcon-7" required />
         </Field>
         <Field label="Type">
-          <Input value={form.type} onChange={(e) => set("type", e.target.value)} placeholder="Quadcopter" required />
+          <Select
+            value={typeChoice}
+            onChange={(e) => {
+              const v = e.target.value;
+              setTypeChoice(v);
+              // Only the preset values go straight into the form; Custom clears
+              // it so a leftover preset can't be submitted alongside blank text.
+              set("type", v === CUSTOM_TYPE ? "" : v);
+            }}
+            required
+          >
+            <option value="" disabled>
+              Select type…
+            </option>
+            {DRONE_TYPE_PRESETS.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+            <option value={CUSTOM_TYPE}>Custom</option>
+          </Select>
+          {typeChoice === CUSTOM_TYPE && (
+            <Input
+              className="mt-2"
+              value={form.type}
+              onChange={(e) => set("type", e.target.value)}
+              placeholder="e.g. Tethered, Hybrid VTOL…"
+              required
+            />
+          )}
         </Field>
         <Field label="Frequency">
           <Input value={form.frequency} onChange={(e) => set("frequency", e.target.value)} placeholder="2.4 GHz" required />
@@ -366,11 +407,11 @@ function StatusModal({
               key={s}
               onClick={() => setStatus(s)}
               className={`flex items-center justify-between rounded-lg border px-4 py-3 text-sm transition-colors ${
-                status === s ? "border-emerald-500/50 bg-emerald-500/10" : "border-white/10 hover:bg-white/5"
+                status === s ? "border-sky-500/50 bg-sky-500/10" : "border-white/10 hover:bg-white/5"
               }`}
             >
               <DroneStatusBadge status={s} />
-              {status === s && <span className="text-xs text-emerald-300">Selected</span>}
+              {status === s && <span className="text-xs text-sky-300">Selected</span>}
             </button>
           ))}
         </div>

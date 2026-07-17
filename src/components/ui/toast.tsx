@@ -23,7 +23,7 @@ const ICONS = {
   info: Info,
 };
 const TONES = {
-  success: "border-emerald-500/40 text-emerald-300",
+  success: "border-sky-500/40 text-sky-300",
   error: "border-red-500/40 text-red-300",
   warning: "border-amber-500/40 text-amber-300",
   info: "border-sky-500/40 text-sky-300",

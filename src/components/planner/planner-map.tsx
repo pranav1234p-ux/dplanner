@@ -14,6 +14,8 @@ import {
 } from "react-leaflet";
 import { MAP_LAYERS, markingColor, type LatLng, type Waypoint, type Shape, type Marking } from "./map-config";
 import { IndiaBoundary, INDIA_BOUNDS } from "./india-boundary";
+import { MapViewMemory } from "./map-view-memory";
+import { CursorCoords } from "./cursor-coords";
 import { MarkingLabels } from "@/components/marking/marking-labels";
 import { markerPinIcon } from "@/components/marking/marker-icon";
 
@@ -25,8 +27,8 @@ function waypointIcon(index: number) {
     className: "",
     html: `<div style="
       display:grid;place-items:center;width:26px;height:26px;border-radius:50%;
-      background:#4ade80;color:#05070d;font-weight:700;font-size:12px;
-      border:2px solid #05070d;box-shadow:0 0 10px rgba(74,222,128,.7)">${index}</div>`,
+      background:#38bdf8;color:#05070d;font-weight:700;font-size:12px;
+      border:2px solid #05070d;box-shadow:0 0 10px rgba(56,189,248,.7)">${index}</div>`,
     iconSize: [26, 26],
     iconAnchor: [13, 13],
   });
@@ -51,6 +53,7 @@ export default function PlannerMap({
   zoom = 5,
   interactive = true,
   showMarkingLabels = true,
+  viewMemoryId,
 }: {
   layer: keyof typeof MAP_LAYERS;
   waypoints: Waypoint[];
@@ -61,6 +64,9 @@ export default function PlannerMap({
   zoom?: number;
   interactive?: boolean;
   showMarkingLabels?: boolean;
+  /** Set to remember this map's centre/zoom across tab switches. Read-only previews
+   *  leave it unset so they don't share a view with the planner. */
+  viewMemoryId?: string;
 }) {
   const tl = MAP_LAYERS[layer];
   const line = waypoints.map((w) => [w.lat, w.lng] as [number, number]);
@@ -81,6 +87,8 @@ export default function PlannerMap({
       {/* English place-name / boundary labels for imagery layers (e.g. satellite) */}
       {tl.reference && <TileLayer key={`ref-${layer}`} url={tl.reference} />}
       <IndiaBoundary />
+      {viewMemoryId && <MapViewMemory id={viewMemoryId} />}
+      <CursorCoords />
 
       {interactive && onAddWaypoint && <ClickHandler onAdd={onAddWaypoint} />}
 
@@ -134,7 +142,7 @@ export default function PlannerMap({
 
       {/* Mission path */}
       {line.length > 1 && (
-        <Polyline positions={line} pathOptions={{ color: "#4ade80", weight: 3, opacity: 0.9 }} />
+        <Polyline positions={line} pathOptions={{ color: "#38bdf8", weight: 3, opacity: 0.9 }} />
       )}
 
       {/* Waypoints */}

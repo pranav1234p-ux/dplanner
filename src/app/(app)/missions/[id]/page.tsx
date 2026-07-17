@@ -106,7 +106,7 @@ export default async function MissionDetailPage({ params }: { params: Promise<{ 
             <CardContent className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <div className="rounded-lg border border-white/8 bg-navy-950/40 p-3">
                 <p className="flex items-center gap-1.5 text-[0.68rem] uppercase tracking-wider text-slate-500">
-                  <Clock className="h-3 w-3 text-emerald-400" /> Takeoff
+                  <Clock className="h-3 w-3 text-sky-400" /> Takeoff
                 </p>
                 <p className="mt-1 text-sm font-semibold text-slate-100">{formatDateTime(mission.startTime)}</p>
               </div>
@@ -144,7 +144,7 @@ export default async function MissionDetailPage({ params }: { params: Promise<{ 
                 <tbody className="font-mono text-xs">
                   {waypoints.map((w) => (
                     <tr key={w.sequence} className="border-b border-white/5 last:border-0">
-                      <td className="px-4 py-2.5 text-emerald-300">{w.sequence}</td>
+                      <td className="px-4 py-2.5 text-sky-300">{w.sequence}</td>
                       <td className="px-4 py-2.5 text-slate-300">{w.latitude.toFixed(5)}</td>
                       <td className="px-4 py-2.5 text-slate-300">{w.longitude.toFixed(5)}</td>
                       <td className="px-4 py-2.5 text-slate-300">{w.altitude} m</td>
@@ -220,7 +220,7 @@ export default async function MissionDetailPage({ params }: { params: Promise<{ 
                 </li>
                 {mission.approvedAt && (
                   <li className="relative">
-                    <span className={`absolute -left-[23px] top-1 h-2.5 w-2.5 rounded-full ${mission.approvalStatus === "APPROVED" ? "bg-emerald-400" : "bg-red-400"}`} />
+                    <span className={`absolute -left-[23px] top-1 h-2.5 w-2.5 rounded-full ${mission.approvalStatus === "APPROVED" ? "bg-sky-400" : "bg-red-400"}`} />
                     <p className="text-slate-200">Flight plan {mission.approvalStatus.toLowerCase()}</p>
                     <p className="text-[0.7rem] text-slate-500">{mission.approvedBy?.fullName ?? "—"} · {formatDateTime(mission.approvedAt)}</p>
                   </li>

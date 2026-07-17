@@ -14,7 +14,7 @@ const waypointSchema = z.object({
 const mapObjectSchema = z.object({
   objectType: z.string(),
   name: z.string(),
-  color: z.string().default("#4ade80"),
+  color: z.string().default("#38bdf8"),
   notes: z.string().optional().nullable(),
   coordinates: z.any(),
 });

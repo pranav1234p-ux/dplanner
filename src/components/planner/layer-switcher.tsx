@@ -24,7 +24,7 @@ export function LayerSwitcher({
           onClick={() => onChange(key)}
           className={cn(
             "rounded px-2 py-1 text-[0.68rem] font-semibold uppercase tracking-wider transition-colors",
-            layer === key ? "bg-emerald-500/20 text-emerald-300" : "text-slate-400 hover:text-slate-200",
+            layer === key ? "bg-sky-500/20 text-sky-300" : "text-slate-400 hover:text-slate-200",
           )}
         >
           {l.name}

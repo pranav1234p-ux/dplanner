@@ -66,11 +66,11 @@ export function MissionList({ missions, canCreate }: { missions: MissionRow[]; c
           >
             <Link
               href={`/missions/${m.id}`}
-              className="panel group flex flex-col gap-3 p-4 transition-colors hover:border-emerald-500/30 sm:flex-row sm:items-center"
+              className="panel group flex flex-col gap-3 p-4 transition-colors hover:border-sky-500/30 sm:flex-row sm:items-center"
             >
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs text-emerald-300">{m.missionCode}</span>
+                  <span className="font-mono text-xs text-sky-300">{m.missionCode}</span>
                   <MissionStatusBadge status={m.missionStatus} />
                   <ApprovalBadge status={m.approvalStatus} />
                   {m.adcNumber && (
@@ -87,7 +87,7 @@ export function MissionList({ missions, canCreate }: { missions: MissionRow[]; c
                   <span>{formatDateTime(m.startTime)}</span>
                 </div>
               </div>
-              <ArrowRight className="hidden h-4 w-4 text-slate-600 transition-transform group-hover:translate-x-1 group-hover:text-emerald-400 sm:block" />
+              <ArrowRight className="hidden h-4 w-4 text-slate-600 transition-transform group-hover:translate-x-1 group-hover:text-sky-400 sm:block" />
             </Link>
           </motion.div>
         ))}

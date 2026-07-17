@@ -82,7 +82,7 @@ export function FloatingRefresh() {
       style={style}
       className={cn(
         "panel fixed z-[9000] flex cursor-move touch-none select-none items-center gap-1 rounded-full px-2 py-1.5",
-        "glow-green text-emerald-200 shadow-lg",
+        "glow-accent text-sky-200 shadow-lg",
       )}
     >
       {/* Back button — navigates to the previous tab (not part of drag/refresh) */}
@@ -94,7 +94,7 @@ export function FloatingRefresh() {
           e.stopPropagation();
           router.back();
         }}
-        className="grid h-6 w-6 place-items-center rounded-full text-slate-300 hover:bg-white/10 hover:text-emerald-300"
+        className="grid h-6 w-6 place-items-center rounded-full text-slate-300 hover:bg-white/10 hover:text-sky-300"
       >
         <ArrowLeft className="h-4 w-4" />
       </button>

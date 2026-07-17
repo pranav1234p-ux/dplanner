@@ -5,7 +5,7 @@ export function StatCard({
   label,
   value,
   icon: Icon,
-  tone = "text-emerald-400",
+  tone = "text-sky-400",
   hint,
 }: {
   label: string;

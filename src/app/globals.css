@@ -2,7 +2,10 @@
 
 /*
   Drone Command Center — always-dark tactical theme.
-  Palette: navy/black/gray base, military-green primary accent, blue highlights.
+  Palette: navy/black base, electric-blue primary accent (circuit-board look).
+  The accent is Tailwind's built-in `sky` scale — overridden nowhere; every
+  `sky-*` utility across the app IS the theme, so recolouring it means editing
+  this file plus the handful of raw hex values Tailwind can't reach (see below).
 */
 
 @theme {
@@ -11,8 +14,6 @@
   --color-navy-850: #0d1420;
   --color-navy-800: #111a29;
   --color-navy-700: #1a2740;
-  --color-mil-green: #4ade80;
-  --color-mil-green-dim: #22c55e;
   --color-mil-blue: #38bdf8;
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
@@ -28,14 +29,22 @@ body {
   height: 100%;
 }
 
+/* Circuit-board background — fixed on <body>, so every route (it wraps the whole
+   app in layout.tsx) shows the same image without each page repeating the rule.
+   A dark scrim sits between the image and the page content: strong enough that
+   the existing `panel` cards (which are already semi-opaque + blurred) keep full
+   text contrast, light enough that the chip/traces/glow are clearly visible in
+   the gaps between panels — the point was to actually see the image, not just
+   tint the page with its colour. */
 body {
   background-color: #05070d;
   background-image:
-    radial-gradient( circle at 15% -10%, rgba(74, 222, 128, 0.06), transparent 40%),
-    radial-gradient(circle at 90% 0%, rgba(56, 189, 248, 0.05), transparent 35%),
-    linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+    linear-gradient(180deg, rgba(5, 7, 13, 0.62), rgba(5, 7, 13, 0.4) 40%, rgba(5, 7, 13, 0.68)),
+    url("/backgrounds/circuit-bg.jpg");
+  background-size: 100% 100%, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  background-attachment: fixed, fixed;
   color: #e2e8f0;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -50,13 +59,13 @@ body {
   background: rgba(15, 23, 42, 0.4);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(74, 222, 128, 0.25);
+  background: rgba(56, 189, 248, 0.25);
   border-radius: 6px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(74, 222, 128, 0.45);
+  background: rgba(56, 189, 248, 0.45);
   background-clip: padding-box;
 }
 
@@ -68,12 +77,12 @@ body {
   backdrop-filter: blur(6px);
 }
 
-@utility glow-green {
-  box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.3), 0 0 24px -6px rgba(74, 222, 128, 0.35);
+@utility glow-accent {
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.3), 0 0 24px -6px rgba(56, 189, 248, 0.35);
 }
 
 @utility text-glow {
-  text-shadow: 0 0 12px rgba(74, 222, 128, 0.45);
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.45);
 }
 
 /* Leaflet dark-map tuning */
@@ -88,15 +97,36 @@ body {
   border-color: rgba(148, 163, 184, 0.2) !important;
 }
 .leaflet-control-zoom a:hover {
-  background: rgba(74, 222, 128, 0.15) !important;
-  color: #4ade80 !important;
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: #38bdf8 !important;
 }
 
 @keyframes pulse-ring {
-  0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5); }
-  70% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(56, 189, 248, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
 }
 .animate-pulse-ring {
   animation: pulse-ring 2s infinite;
+}
+
+/* Approved missions that have gone ACTIVE blink on a 1.5s cycle. The stroke colour
+   stays the mission's own — the on-beat adds a glow in that same colour. */
+@keyframes mission-path-blink {
+  0%, 49% {
+    opacity: 1;
+    filter: drop-shadow(0 0 3px var(--mission-color)) drop-shadow(0 0 9px var(--mission-color));
+  }
+  50%, 100% {
+    opacity: 0.1;
+    filter: none;
+  }
+}
+.mission-path-blink {
+  animation: mission-path-blink 1.5s steps(1, end) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mission-path-blink {
+    animation: none;
+  }
 }

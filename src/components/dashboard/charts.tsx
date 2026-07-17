@@ -70,7 +70,7 @@ export function CategoryBar({ data }: { data: { name: string; value: number }[] 
           tickLine={false}
           allowDecimals={false}
         />
-        <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "rgba(74,222,128,0.06)" }} />
+        <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "rgba(56,189,248,0.06)" }} />
         <Bar dataKey="value" radius={[4, 4, 0, 0]}>
           {data.map((_, i) => (
             <Cell key={i} fill={GREENS[i % GREENS.length]} />

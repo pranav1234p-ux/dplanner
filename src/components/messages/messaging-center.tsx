@@ -204,7 +204,7 @@ export function MessagingCenter({ isAdmin }: { isAdmin: boolean }) {
       <div className="flex flex-col border-b border-white/8 md:border-b-0 md:border-r">
         <div className="flex items-center justify-between px-4 py-3">
           <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Conversations</span>
-          <button onClick={load} className="text-slate-500 hover:text-emerald-300" title="Refresh">
+          <button onClick={load} className="text-slate-500 hover:text-sky-300" title="Refresh">
             <RefreshCw className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -213,7 +213,7 @@ export function MessagingCenter({ isAdmin }: { isAdmin: boolean }) {
             onClick={() => setSelected(BROADCAST)}
             className={cn(
               "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors",
-              selected === BROADCAST ? "bg-emerald-500/10 text-emerald-200" : "text-slate-300 hover:bg-white/5",
+              selected === BROADCAST ? "bg-sky-500/10 text-sky-200" : "text-slate-300 hover:bg-white/5",
             )}
           >
             <Megaphone className="h-4 w-4 shrink-0 text-amber-400" />
@@ -231,10 +231,10 @@ export function MessagingCenter({ isAdmin }: { isAdmin: boolean }) {
                 onClick={() => setSelected(c.id)}
                 className={cn(
                   "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors",
-                  selected === c.id ? "bg-emerald-500/10 text-emerald-200" : "text-slate-300 hover:bg-white/5",
+                  selected === c.id ? "bg-sky-500/10 text-sky-200" : "text-slate-300 hover:bg-white/5",
                 )}
               >
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-navy-700 text-xs font-bold text-emerald-300">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-navy-700 text-xs font-bold text-sky-300">
                   {c.fullName.split(" ").map((s) => s[0]).slice(0, 2).join("")}
                 </span>
                 <div className="min-w-0 flex-1">
@@ -267,7 +267,7 @@ export function MessagingCenter({ isAdmin }: { isAdmin: boolean }) {
             </>
           ) : selectedContact ? (
             <>
-              <UserIcon className="h-4 w-4 text-emerald-400" />
+              <UserIcon className="h-4 w-4 text-sky-400" />
               <div className="flex items-center gap-2">
                 <p className="text-sm font-semibold text-slate-100">
                   {selectedContact.rank ? `${selectedContact.rank} ` : ""}
@@ -304,9 +304,9 @@ export function MessagingCenter({ isAdmin }: { isAdmin: boolean }) {
                       value={editText}
                       onChange={(e) => setEditText(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && saveEdit(m)}
-                      className="flex-1 rounded-lg border border-white/15 bg-navy-950/60 px-2.5 py-1.5 text-sm text-slate-100 focus:border-emerald-500/40 focus:outline-none"
+                      className="flex-1 rounded-lg border border-white/15 bg-navy-950/60 px-2.5 py-1.5 text-sm text-slate-100 focus:border-sky-500/40 focus:outline-none"
                     />
-                    <button onClick={() => saveEdit(m)} className="text-emerald-400 hover:text-emerald-300" title="Save">
+                    <button onClick={() => saveEdit(m)} className="text-sky-400 hover:text-sky-300" title="Save">
                       <Check className="h-4 w-4" />
                     </button>
                     <button onClick={() => setEditingId(null)} className="text-slate-500 hover:text-slate-300" title="Cancel">
@@ -319,7 +319,7 @@ export function MessagingCenter({ isAdmin }: { isAdmin: boolean }) {
                       className={cn(
                         "max-w-[85%] rounded-2xl px-3.5 py-2 text-sm",
                         mine
-                          ? "rounded-br-sm bg-emerald-500/90 text-navy-950"
+                          ? "rounded-br-sm bg-sky-500/90 text-navy-950"
                           : "rounded-bl-sm border border-white/10 bg-navy-800 text-slate-100",
                       )}
                     >
@@ -412,7 +412,7 @@ export function MessagingCenter({ isAdmin }: { isAdmin: boolean }) {
                     onClick={() => forwardTo(c.id)}
                     className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left hover:bg-white/5"
                   >
-                    <span className="grid h-7 w-7 place-items-center rounded-full bg-navy-700 text-xs font-bold text-emerald-300">
+                    <span className="grid h-7 w-7 place-items-center rounded-full bg-navy-700 text-xs font-bold text-sky-300">
                       {c.fullName.split(" ").map((s) => s[0]).slice(0, 2).join("")}
                     </span>
                     <span className="text-sm text-slate-200">{c.fullName}</span>
@@ -429,7 +429,7 @@ export function MessagingCenter({ isAdmin }: { isAdmin: boolean }) {
             <div className="mb-2 flex flex-wrap gap-1.5">
               {pendingFiles.map((f, i) => (
                 <span key={i} className="flex items-center gap-1.5 rounded-md border border-white/10 bg-navy-950/60 px-2 py-1 text-[0.7rem] text-slate-300">
-                  <FileText className="h-3 w-3 text-emerald-400" />
+                  <FileText className="h-3 w-3 text-sky-400" />
                   <span className="max-w-[120px] truncate">{f.name}</span>
                   <button onClick={() => setPendingFiles((p) => p.filter((_, idx) => idx !== i))} className="text-slate-500 hover:text-red-300">
                     <X className="h-3 w-3" />
@@ -446,7 +446,7 @@ export function MessagingCenter({ isAdmin }: { isAdmin: boolean }) {
               onChange={(e) => setClassification(e.target.value as Classification)}
               disabled={!canSend}
               title="Message classification"
-              className="h-10 shrink-0 rounded-lg border border-white/10 bg-navy-950/60 px-2 text-xs text-slate-200 focus:border-emerald-500/40 focus:outline-none disabled:opacity-50"
+              className="h-10 shrink-0 rounded-lg border border-white/10 bg-navy-950/60 px-2 text-xs text-slate-200 focus:border-sky-500/40 focus:outline-none disabled:opacity-50"
             >
               {CLASSIFICATIONS.map((c) => (
                 <option key={c} value={c}>{CLASSIFICATION_META[c].label}</option>
@@ -460,7 +460,7 @@ export function MessagingCenter({ isAdmin }: { isAdmin: boolean }) {
               disabled={!canSend}
               onClick={() => fileRef.current?.click()}
               title="Attach images, videos, files"
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-lg text-slate-400 hover:bg-white/5 hover:text-emerald-300 disabled:opacity-50"
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-lg text-slate-400 hover:bg-white/5 hover:text-sky-300 disabled:opacity-50"
             >
               <Paperclip className="h-4.5 w-4.5" />
             </button>
@@ -476,7 +476,7 @@ export function MessagingCenter({ isAdmin }: { isAdmin: boolean }) {
                     : "Type a message…"
                   : "Only administrators can broadcast"
               }
-              className="h-10 flex-1 rounded-lg border border-white/10 bg-navy-950/60 px-3 text-sm text-slate-100 placeholder:text-slate-600 focus:border-emerald-500/40 focus:outline-none disabled:opacity-50"
+              className="h-10 flex-1 rounded-lg border border-white/10 bg-navy-950/60 px-3 text-sm text-slate-100 placeholder:text-slate-600 focus:border-sky-500/40 focus:outline-none disabled:opacity-50"
             />
             <Button type="submit" size="icon" loading={sending} disabled={!canSend || (!body.trim() && pendingFiles.length === 0)}>
               <Send className="h-4 w-4" />

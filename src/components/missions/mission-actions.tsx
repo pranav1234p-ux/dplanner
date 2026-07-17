@@ -3,7 +3,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, XCircle, FileDown, Printer, Map as MapIcon, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Select } from "@/components/ui/input";
+import { Input, Select } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toast";
 import { MISSION_STATUSES } from "@/lib/constants";
 
@@ -33,13 +33,22 @@ export function MissionActions({
   const router = useRouter();
   const { push } = useToast();
   const [busy, setBusy] = React.useState(false);
+  const [adcMode, setAdcMode] = React.useState<"AUTO" | "CUSTOM">("AUTO");
+  const [customAdc, setCustomAdc] = React.useState("");
 
   async function decide(decision: "APPROVE" | "REJECT") {
+    const custom = customAdc.trim();
+    if (decision === "APPROVE" && adcMode === "CUSTOM" && !custom) {
+      return push({ kind: "error", title: "Enter an ADC number", message: "Or switch back to automatic." });
+    }
     setBusy(true);
     const res = await fetch(`/api/missions/${missionId}/approve`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ decision }),
+      body: JSON.stringify({
+        decision,
+        ...(decision === "APPROVE" && adcMode === "CUSTOM" ? { adcNumber: custom } : {}),
+      }),
     });
     const data = await res.json();
     setBusy(false);
@@ -118,8 +127,32 @@ export function MissionActions({
     <div className="space-y-4">
       {canApprove && approvalStatus === "PENDING" && (
         <div className="flex flex-col gap-2">
+          <div>
+            <label className="mb-1.5 block text-[0.7rem] font-semibold uppercase tracking-wider text-slate-400">
+              ADC Number
+            </label>
+            <Select
+              value={adcMode}
+              onChange={(e) => setAdcMode(e.target.value as "AUTO" | "CUSTOM")}
+              disabled={busy}
+            >
+              <option value="AUTO">Automatic — next in sequence</option>
+              <option value="CUSTOM">Custom — enter manually</option>
+            </Select>
+            {adcMode === "CUSTOM" && (
+              <Input
+                value={customAdc}
+                onChange={(e) => setCustomAdc(e.target.value)}
+                placeholder="e.g. ADC-2026-0042"
+                disabled={busy}
+                className="mt-2 font-mono"
+                aria-label="Custom ADC number"
+              />
+            )}
+          </div>
           <Button onClick={() => decide("APPROVE")} loading={busy} className="w-full justify-center">
-            <CheckCircle2 className="h-4 w-4" /> Approve &amp; Generate ADC
+            <CheckCircle2 className="h-4 w-4" />
+            {adcMode === "CUSTOM" ? "Approve & Assign ADC" : "Approve & Generate ADC"}
           </Button>
           <Button onClick={() => decide("REJECT")} loading={busy} variant="danger" className="w-full justify-center">
             <XCircle className="h-4 w-4" /> Reject Flight Plan

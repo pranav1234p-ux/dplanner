@@ -54,7 +54,7 @@ export default function RegisterPage() {
   if (done) {
     return (
       <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
-        <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-emerald-500/10 text-emerald-400 glow-green">
+        <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-sky-500/10 text-sky-400 glow-accent">
           <CheckCircle2 className="h-7 w-7" />
         </div>
         <h2 className="mt-5 text-2xl font-bold text-slate-50">Request Submitted</h2>
@@ -106,7 +106,7 @@ export default function RegisterPage() {
 
       <p className="mt-6 text-center text-sm text-slate-500">
         Already have an account?{" "}
-        <Link href="/login" className="font-semibold text-emerald-400 hover:text-emerald-300">
+        <Link href="/login" className="font-semibold text-sky-400 hover:text-sky-300">
           Sign in
         </Link>
       </p>

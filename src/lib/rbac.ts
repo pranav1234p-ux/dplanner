@@ -17,7 +17,8 @@ export type Permission =
   | "marking.create"
   | "user.approve"
   | "user.manage"
-  | "analytics.view";
+  | "analytics.view"
+  | "detection.run";
 
 const ADMIN_PERMISSIONS: Permission[] = [
   "drone.create",
@@ -36,6 +37,7 @@ const ADMIN_PERMISSIONS: Permission[] = [
   "user.approve",
   "user.manage",
   "analytics.view",
+  "detection.run",
 ];
 
 const OPERATOR_PERMISSIONS: Permission[] = [
@@ -44,6 +46,7 @@ const OPERATOR_PERMISSIONS: Permission[] = [
   "mission.create",
   "mission.editOwn",
   "marking.create",
+  "detection.run",
 ];
 
 const VIEWER_PERMISSIONS: Permission[] = [];

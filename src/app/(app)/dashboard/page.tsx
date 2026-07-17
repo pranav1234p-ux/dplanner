@@ -102,7 +102,7 @@ export default async function DashboardPage() {
   ]);
 
   const statusPie = [
-    { name: "Active", value: droneByStatus.ACTIVE, color: "#4ade80" },
+    { name: "Active", value: droneByStatus.ACTIVE, color: "#38bdf8" },
     { name: "Standby", value: droneByStatus.STANDBY, color: "#facc15" },
     { name: "Maintenance", value: droneByStatus.MAINTENANCE, color: "#f87171" },
   ];
@@ -137,7 +137,7 @@ export default async function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <MiniStat label="Active" value={droneByStatus.ACTIVE} dot="bg-emerald-400" />
+              <MiniStat label="Active" value={droneByStatus.ACTIVE} dot="bg-sky-400" />
               <MiniStat label="Standby" value={droneByStatus.STANDBY} dot="bg-amber-400" />
               <MiniStat label="Maintenance" value={droneByStatus.MAINTENANCE} dot="bg-red-400" />
             </CardContent>
@@ -151,7 +151,7 @@ export default async function DashboardPage() {
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-2">
               <MiniStat label="Planned" value={missionByStatus.PLANNED} dot="bg-sky-400" />
-              <MiniStat label="Active" value={missionByStatus.ACTIVE} dot="bg-emerald-400" />
+              <MiniStat label="Active" value={missionByStatus.ACTIVE} dot="bg-sky-400" />
               <MiniStat label="Completed" value={missionByStatus.COMPLETED} dot="bg-slate-400" />
               <MiniStat label="Expired" value={missionByStatus.EXPIRED} dot="bg-amber-400" />
               <MiniStat label="Cancelled" value={missionByStatus.CANCELLED} dot="bg-red-400" />
@@ -165,7 +165,7 @@ export default async function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <MiniStat label="Administrators" value={userByRole.ADMIN} dot="bg-emerald-400" />
+              <MiniStat label="Administrators" value={userByRole.ADMIN} dot="bg-sky-400" />
               <MiniStat label="Operators" value={userByRole.OPERATOR} dot="bg-sky-400" />
               <MiniStat label="Viewers" value={userByRole.VIEWER} dot="bg-slate-400" />
             </CardContent>
@@ -213,7 +213,7 @@ export default async function DashboardPage() {
                 const Icon = ACTION_ICON[log.action] ?? Activity;
                 return (
                   <li key={log.id} className="relative">
-                    <span className="absolute -left-[31px] grid h-6 w-6 place-items-center rounded-full border border-white/10 bg-navy-850 text-emerald-400">
+                    <span className="absolute -left-[31px] grid h-6 w-6 place-items-center rounded-full border border-white/10 bg-navy-850 text-sky-400">
                       <Icon className="h-3 w-3" />
                     </span>
                     <div className="flex flex-wrap items-baseline justify-between gap-x-3">

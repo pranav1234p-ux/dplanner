@@ -42,7 +42,7 @@ function LoginForm() {
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
       <div className="mb-8 flex items-center gap-3 lg:hidden">
-        <div className="grid h-10 w-10 place-items-center rounded-lg bg-emerald-500/10 text-emerald-400">
+        <div className="grid h-10 w-10 place-items-center rounded-lg bg-sky-500/10 text-sky-400">
           <Radar className="h-5 w-5" />
         </div>
         <p className="text-sm font-bold uppercase tracking-[0.2em]">Drone Command Center</p>
@@ -86,7 +86,7 @@ function LoginForm() {
 
       <p className="mt-6 text-center text-sm text-slate-500">
         Need an operator account?{" "}
-        <Link href="/register" className="font-semibold text-emerald-400 hover:text-emerald-300">
+        <Link href="/register" className="font-semibold text-sky-400 hover:text-sky-300">
           Request access
         </Link>
       </p>

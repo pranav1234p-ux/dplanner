@@ -7,12 +7,12 @@ type Size = "sm" | "md" | "lg" | "icon";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-emerald-500/90 text-navy-950 hover:bg-emerald-400 font-semibold shadow-[0_0_20px_-6px_rgba(74,222,128,0.6)]",
+    "bg-sky-500/90 text-navy-950 hover:bg-sky-400 font-semibold shadow-[0_0_20px_-6px_rgba(56,189,248,0.6)]",
   secondary: "bg-navy-700/60 text-slate-100 hover:bg-navy-700 border border-white/10",
-  outline: "border border-white/15 text-slate-200 hover:bg-white/5 hover:border-emerald-500/40",
+  outline: "border border-white/15 text-slate-200 hover:bg-white/5 hover:border-sky-500/40",
   ghost: "text-slate-300 hover:bg-white/5 hover:text-white",
   danger: "bg-red-500/90 text-white hover:bg-red-500 font-semibold",
-  success: "bg-emerald-600 text-white hover:bg-emerald-500 font-semibold",
+  success: "bg-sky-600 text-white hover:bg-sky-500 font-semibold",
 };
 
 const sizes: Record<Size, string> = {
@@ -35,7 +35,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled={disabled || loading}
       className={cn(
         "inline-flex items-center rounded-lg font-medium tracking-wide transition-all duration-150",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50",
         "disabled:opacity-50 disabled:pointer-events-none uppercase text-[0.72rem]",
         variants[variant],
         sizes[size],

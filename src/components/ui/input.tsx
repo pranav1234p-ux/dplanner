@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 const base =
   "w-full rounded-lg bg-navy-950/60 border border-white/10 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 " +
-  "focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 transition-colors disabled:opacity-50";
+  "focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/30 transition-colors disabled:opacity-50";
 
 export const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   ({ className, ...props }, ref) => (
@@ -34,7 +34,7 @@ export function Label({ className, ...props }: React.LabelHTMLAttributes<HTMLLab
   return (
     <label
       className={cn(
-        "mb-1.5 block text-[0.7rem] font-semibold uppercase tracking-wider text-slate-400",
+        "mb-1.5 block text-[0.7rem] font-semibold uppercase tracking-wider text-slate-500",
         className,
       )}
       {...props}
