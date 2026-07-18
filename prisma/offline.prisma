@@ -1,0 +1,162 @@
+// Offline schema — a local SQLite mirror of schema.prisma used when the app runs
+// with OFFLINE_MODE=1 (no network / Supabase unreachable). Models are identical to
+// the Postgres schema; only the provider, generated-client output, and datasource
+// differ. Keep the models in sync with schema.prisma.
+//
+// Setup (creates + seeds prisma/offline.db):  npm run offline:setup
+
+generator offlineClient {
+  provider = "prisma-client-js"
+  output   = "../src/generated/offline-client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./offline.db"
+}
+
+model User {
+  id             String   @id @default(cuid())
+  username       String   @unique
+  password       String
+  role           String   @default("VIEWER")
+  approvalStatus String   @default("PENDING")
+  fullName       String
+  armyNumber     String?
+  rank           String?
+  unit           String?
+  email          String   @unique
+  createdAt      DateTime @default(now())
+
+  missionsCreated  Mission[]      @relation("MissionCreatedBy")
+  missionsApproved Mission[]      @relation("MissionApprovedBy")
+  dronesCreated    Drone[]        @relation("DroneCreatedBy")
+  mapMarkings      MapMarking[]
+  notifications    Notification[]
+  auditLogs        AuditLog[]
+  messagesSent     Message[]      @relation("MessageSender")
+  messagesReceived Message[]      @relation("MessageRecipient")
+}
+
+model Drone {
+  id          String   @id @default(cuid())
+  droneId     String   @unique
+  name        String
+  type        String
+  frequency   String
+  unit        String
+  latitude    Float
+  longitude   Float
+  status      String   @default("STANDBY")
+  createdById String?
+  createdAt   DateTime @default(now())
+
+  createdBy User?     @relation("DroneCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  missions  Mission[]
+}
+
+model Mission {
+  id             String    @id @default(cuid())
+  missionName    String
+  missionCode    String    @unique
+  description    String?
+  unit           String?
+  droneId        String
+  missionStatus  String    @default("PLANNED")
+  approvalStatus String    @default("PENDING")
+  adcNumber      String?
+  notes          String?
+  startTime      DateTime?
+  endTime        DateTime?
+  createdById    String
+  approvedById   String?
+  approvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  drone      Drone       @relation(fields: [droneId], references: [id])
+  createdBy  User        @relation("MissionCreatedBy", fields: [createdById], references: [id])
+  approvedBy User?       @relation("MissionApprovedBy", fields: [approvedById], references: [id])
+  waypoints  Waypoint[]
+  mapObjects MapObject[]
+}
+
+model Waypoint {
+  id        String @id @default(cuid())
+  missionId String
+  sequence  Int
+  latitude  Float
+  longitude Float
+  altitude  Float  @default(100)
+  speed     Float  @default(10)
+  hoverTime Float  @default(0)
+
+  mission Mission @relation(fields: [missionId], references: [id], onDelete: Cascade)
+}
+
+model MapObject {
+  id          String  @id @default(cuid())
+  missionId   String
+  objectType  String
+  name        String
+  color       String  @default("#38bdf8")
+  notes       String?
+  coordinates String
+
+  mission Mission @relation(fields: [missionId], references: [id], onDelete: Cascade)
+}
+
+model MapMarking {
+  id          String   @id @default(cuid())
+  name        String
+  shapeType   String
+  category    String   @default("CUSTOM")
+  color       String   @default("#38bdf8")
+  coordinates String
+  notes       String?
+  createdById String
+  createdAt   DateTime @default(now())
+
+  createdBy User @relation(fields: [createdById], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String?
+  audience  String   @default("ADMIN,OPERATOR,VIEWER")
+  title     String
+  message   String
+  type      String   @default("INFO")
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id             String    @id @default(cuid())
+  senderId       String
+  senderName     String
+  recipientId    String?
+  body           String
+  attachments    String    @default("[]")
+  classification String    @default("UNCLASSIFIED")
+  read           Boolean   @default(false)
+  editedAt       DateTime?
+  deletedFor     String    @default("")
+  createdAt      DateTime  @default(now())
+
+  sender    User  @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient User? @relation("MessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  detail    String
+  userId    String?
+  actorName String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}

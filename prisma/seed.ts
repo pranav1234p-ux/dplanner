@@ -1,7 +1,14 @@
 import { PrismaClient } from "@prisma/client";
+import { PrismaClient as OfflinePrismaClient } from "../src/generated/offline-client";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient();
+// The same seed feeds both databases: the online Postgres one, and the local
+// SQLite offline database when run with `--offline` (npm run offline:setup).
+const OFFLINE = process.argv.includes("--offline") || process.env.OFFLINE_MODE === "1";
+const prisma = (
+  OFFLINE ? new OfflinePrismaClient() : new PrismaClient()
+) as unknown as PrismaClient;
+if (OFFLINE) console.log("Seeding the OFFLINE SQLite database (prisma/offline.db)…");
 
 async function main() {
   // Login credentials come from environment variables (set them in .env, which is

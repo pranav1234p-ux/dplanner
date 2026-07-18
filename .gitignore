@@ -46,3 +46,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Offline mode: local SQLite database (local data, never committed) and the
+# generated offline Prisma client (build artifact, regenerated on install/build).
+/prisma/offline.db
+/prisma/offline.db-journal
+/src/generated

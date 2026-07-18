@@ -9,7 +9,7 @@ export default async function DroneDetectionPage() {
   const session = (await getSession())!;
   return (
     <div>
-      <PageHeader title="Drone Detection" subtitle="YOLOv11n detection (drone / bird / airplane) on a live camera or recorded video" />
+      <PageHeader title="Drone Detection" subtitle="Two YOLOv11n models compared live — 3-class vs single-class drone" />
       <div className="p-6">
         <DetectionConsole canRun={can(session.role, "detection.run")} />
       </div>

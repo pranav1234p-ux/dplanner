@@ -18,6 +18,8 @@ export const POST = route(async (req: Request) => {
   upstream.append("frame", frame, "frame.jpg");
   upstream.append("conf", String(form.get("conf") ?? "0.3"));
   upstream.append("iou", String(form.get("iou") ?? "0.5"));
+  const models = form.get("models");
+  if (typeof models === "string" && models) upstream.append("models", models);
 
   let res: Response;
   try {

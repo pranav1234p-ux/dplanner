@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
-    "postinstall": "prisma generate",
+    "build": "prisma generate && prisma generate --schema=prisma/offline.prisma && next build",
+    "postinstall": "prisma generate && prisma generate --schema=prisma/offline.prisma",
     "start": "next start",
     "lint": "eslint",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
-    "db:reset": "prisma db push --force-reset && prisma db seed"
+    "db:reset": "prisma db push --force-reset && prisma db seed",
+    "offline:setup": "prisma generate --schema=prisma/offline.prisma && prisma db push --schema=prisma/offline.prisma --skip-generate && tsx prisma/seed.ts --offline"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

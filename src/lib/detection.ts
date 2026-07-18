@@ -13,9 +13,16 @@ export type DetectionBox = {
   track_id: number | null;
 };
 
-export type DetectResult = {
-  detections: DetectionBox[];
+export type ModelResult = {
+  model: string;
+  label: string;
   inference_ms: number;
+  detections: DetectionBox[];
+  error?: string | null;
+};
+
+export type DetectResult = {
   width: number;
   height: number;
+  results: ModelResult[];
 };
